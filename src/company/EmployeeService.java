@@ -1,5 +1,7 @@
 package company;
 
+import company.employees.Employee;
+
 public class EmployeeService {
 
     private Employee[] employees;
@@ -17,7 +19,7 @@ public class EmployeeService {
     public double calculateSalaryAndBonus() {
         double totalSalaryAndBonus = 0;
         for (Employee employee : employees) {
-            totalSalaryAndBonus += (double) employee.getSalary() + employee.getDefaultBugRate() * employee.getFixedBugs();
+            totalSalaryAndBonus += employee.getFinalSalary();
         }
         return totalSalaryAndBonus;
     }
@@ -105,6 +107,13 @@ public class EmployeeService {
             }
         }
         return removedEmployee;
+    }
+
+    public void add(Employee newEmployee) {
+        Employee[] newArray = new Employee[employees.length + 1];
+        System.arraycopy(employees, 0, newArray, 0, employees.length);
+        employees = newArray;
+        employees[employees.length - 1] = newEmployee;
     }
 
     private Employee[] getNewArrayExcluding(int excludingIndex) {

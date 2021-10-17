@@ -1,4 +1,4 @@
-package company;
+package company.enums;
 
 public enum Gender {
     MALE,
