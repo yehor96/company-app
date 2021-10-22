@@ -110,6 +110,10 @@ public class EmployeeService {
     }
 
     public void add(Employee newEmployee) {
+        if (employeeExists(newEmployee)) {
+            return;
+        }
+
         Employee[] newArray = new Employee[employees.length + 1];
         System.arraycopy(employees, 0, newArray, 0, employees.length);
         employees = newArray;
@@ -126,5 +130,14 @@ public class EmployeeService {
             newArray[counter++] = employees[i];
         }
         return newArray;
+    }
+
+    private boolean employeeExists(Employee employee) {
+        for (Employee value : employees) {
+            if (value.equals(employee)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
