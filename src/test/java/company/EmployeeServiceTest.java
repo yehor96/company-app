@@ -4,6 +4,7 @@ import company.employees.Designer;
 import company.employees.Developer;
 import company.employees.Employee;
 import company.employees.Manager;
+import company.service.EmployeeServiceArray;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -21,13 +22,13 @@ class EmployeeServiceTest {
             new Manager("ManagerName", 35, 10000, FEMALE);
     private final Developer developerUnderTest =
             new Developer("DeveloperName", 40, 8000, FEMALE, 4);
-    private static EmployeeService employeeService;
+    private static EmployeeServiceArray employeeService;
 
     @Test
     void testCalculateSalaryAndBonus() {
         double expectedResult = designerUnderTest.getFinalSalary() + managerUnderTest.getFinalSalary();
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest});
         double actualResult = employeeService.calculateSalaryAndBonus();
 
         assertEquals(expectedResult, actualResult);
@@ -39,7 +40,7 @@ class EmployeeServiceTest {
         long id = 500;
         employee.setId(id);
 
-        employeeService = new EmployeeService(
+        employeeService = new EmployeeServiceArray(
                 new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest, employee});
         Employee actualEmployee = employeeService.getById(id);
 
@@ -50,7 +51,7 @@ class EmployeeServiceTest {
     void testGetByInvalidId() {
         long invalidId = -1;
 
-        employeeService = new EmployeeService(
+        employeeService = new EmployeeServiceArray(
                 new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee actualEmployee = employeeService.getById(invalidId);
 
@@ -61,7 +62,7 @@ class EmployeeServiceTest {
     void testGetByNameOneResult() {
         String nameForSearch = designerUnderTest.getName();
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee[] actualEmployees = employeeService.getByName(nameForSearch);
 
         assertEquals(1, actualEmployees.length);
@@ -73,7 +74,7 @@ class EmployeeServiceTest {
         String nameForSearch = managerUnderTest.getName();
         Employee employee = new Developer(nameForSearch, 50, 6000, MALE, 5);
 
-        employeeService = new EmployeeService(
+        employeeService = new EmployeeServiceArray(
                 new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest, employee});
         Employee[] actualEmployees = employeeService.getByName(nameForSearch);
 
@@ -86,7 +87,7 @@ class EmployeeServiceTest {
     void testGetByNameNegativeResult() {
         String nameForSearch = "Not Existing";
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee[] actualEmployees = employeeService.getByName(nameForSearch);
 
         assertEquals(0, actualEmployees.length);
@@ -99,7 +100,7 @@ class EmployeeServiceTest {
         Employee employee3 = new Developer("Ba", 50, 6000, MALE, 5);
         Employee[] expectedEmployees = new Employee[]{employee1, employee3, employee2};
 
-        employeeService = new EmployeeService(new Employee[]{employee1, employee2, employee3});
+        employeeService = new EmployeeServiceArray(new Employee[]{employee1, employee2, employee3});
         Employee[] actualEmployees = employeeService.sortByName();
 
         assertArrayEquals(expectedEmployees, actualEmployees);
@@ -112,7 +113,7 @@ class EmployeeServiceTest {
         Employee employee3 = new Developer("B", 50, 8000, MALE, 5);
         Employee[] expectedEmployees = new Employee[]{employee1, employee3, employee2};
 
-        employeeService = new EmployeeService(new Employee[]{employee1, employee2, employee3});
+        employeeService = new EmployeeServiceArray(new Employee[]{employee1, employee2, employee3});
         Employee[] actualEmployees = employeeService.sortByNameAndSalary();
 
         assertArrayEquals(expectedEmployees, actualEmployees);
@@ -123,7 +124,7 @@ class EmployeeServiceTest {
         Employee employee = employeeFactory.generateEmployee();
         employee.setId(designerUnderTest.getId());
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee oldEmployee = employeeService.edit(employee);
         Employee[] actualEmployees = employeeService.sortByName();
 
@@ -136,7 +137,7 @@ class EmployeeServiceTest {
         Employee employee = employeeFactory.generateEmployee();
         employee.setId(100);
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee oldEmployee = employeeService.edit(employee);
         Employee[] actualEmployees = employeeService.sortByName();
 
@@ -148,7 +149,7 @@ class EmployeeServiceTest {
     void testRemove() {
         long id = designerUnderTest.getId();
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee removedEmployee = employeeService.remove(id);
         Employee[] actualEmployees = employeeService.sortByName();
 
@@ -160,7 +161,7 @@ class EmployeeServiceTest {
     void testRemoveInvalid() {
         long id = -1;
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee[] employeesBeforeRemoval = employeeService.sortByName();
         Employee removedEmployee = employeeService.remove(id);
         Employee[] employeesAfterRemoval = employeeService.sortByName();
@@ -173,7 +174,7 @@ class EmployeeServiceTest {
     void testAdd() {
         Employee employee = employeeFactory.generateEmployee();
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee[] employeesBeforeAdding = employeeService.sortByName();
         employeeService.add(employee);
         Employee[] employeesAfterAdding = employeeService.sortByName();
@@ -186,7 +187,7 @@ class EmployeeServiceTest {
     void testAddExisting() {
         Employee existingEmployee = designerUnderTest;
 
-        employeeService = new EmployeeService(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
+        employeeService = new EmployeeServiceArray(new Employee[]{designerUnderTest, managerUnderTest, developerUnderTest});
         Employee[] employeesBeforeAdding = employeeService.sortByName();
         employeeService.add(existingEmployee);
         Employee[] employeesAfterAdding = employeeService.sortByName();

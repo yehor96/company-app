@@ -1,21 +1,23 @@
-package company;
+package company.service;
 
 import company.employees.Employee;
 
-public class EmployeeService {
+public class EmployeeServiceArray implements EmployeeService {
 
     private Employee[] employees;
 
-    public EmployeeService(Employee[] employees) {
+    public EmployeeServiceArray(Employee[] employees) {
         this.employees = employees;
     }
 
+    @Override
     public void printEmployees() {
         for (Employee employee : employees) {
             System.out.println(employee);
         }
     }
 
+    @Override
     public double calculateSalaryAndBonus() {
         double totalSalaryAndBonus = 0;
         for (Employee employee : employees) {
@@ -24,6 +26,7 @@ public class EmployeeService {
         return totalSalaryAndBonus;
     }
 
+    @Override
     public Employee getById(long id) {
         for (Employee employee : employees) {
             if (employee.getId() == id) {
@@ -33,6 +36,7 @@ public class EmployeeService {
         return null;
     }
 
+    @Override
     public Employee[] getByName(String name) {
         int matchingSize = 0;
         for (Employee employee : employees) {
@@ -58,6 +62,7 @@ public class EmployeeService {
         return resultArray;
     }
 
+    @Override
     public Employee[] sortByName() {
         for (int i = 0; i < employees.length; i++) {
             for (int j = 0; j < employees.length - 1; j++) {
@@ -71,6 +76,7 @@ public class EmployeeService {
         return employees;
     }
 
+    @Override
     public Employee[] sortByNameAndSalary() {
         for (int i = 0; i < employees.length; i++) {
             for (int j = 0; j < employees.length - 1; j++) {
@@ -85,6 +91,7 @@ public class EmployeeService {
         return employees;
     }
 
+    @Override
     public Employee edit(Employee newEmployee) {
         Employee oldEmployee = null;
         for (int i = 0; i < employees.length; i++) {
@@ -98,6 +105,7 @@ public class EmployeeService {
         return oldEmployee;
     }
 
+    @Override
     public Employee remove(long id) {
         Employee removedEmployee = null;
         for (int i = 0; i < employees.length; i++) {
@@ -109,6 +117,7 @@ public class EmployeeService {
         return removedEmployee;
     }
 
+    @Override
     public void add(Employee newEmployee) {
         if (employeeExists(newEmployee)) {
             return;

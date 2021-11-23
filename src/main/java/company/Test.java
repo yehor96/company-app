@@ -3,6 +3,7 @@ package company;
 import company.employees.Designer;
 import company.employees.Employee;
 import company.enums.Gender;
+import company.service.EmployeeServiceArray;
 
 import java.util.Arrays;
 
@@ -11,7 +12,7 @@ public class Test {
     public static void main(String[] args) {
 
         EmployeeFactory employeeFactory = new EmployeeFactory();
-        EmployeeService employeeService = new EmployeeService(employeeFactory.generateEmployees(8));
+        EmployeeServiceArray employeeService = new EmployeeServiceArray(employeeFactory.generateEmployees(8));
         System.out.println("Initially all employees: ");
         employeeService.printEmployees();
 
