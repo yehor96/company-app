@@ -14,6 +14,11 @@ public class Developer extends Employee {
         this.fixedBugs = fixedBugs;
     }
 
+    public Developer(int id, String name, int age, int salary, Gender gender, int fixedBugs) {
+        super(id, name, age, salary, gender);
+        this.fixedBugs = fixedBugs;
+    }
+
     @Override
     public double getFinalSalary() {
         return (salary + fixedBugs * DEFAULT_BUG_RATE) * (double) (getBoolean() ? 2 : 0);

@@ -13,6 +13,12 @@ public class Designer extends Employee {
         this.workedDays = workedDays;
     }
 
+    public Designer(int id, String name, int age, int salary, Gender gender, double rate, int workedDays) {
+        super(id, name, age, salary, gender);
+        this.rate = rate;
+        this.workedDays = workedDays;
+    }
+
     @Override
     public double getFinalSalary() {
         return (double) salary + rate * workedDays;

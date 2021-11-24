@@ -19,6 +19,14 @@ public abstract class Employee {
         this.gender = gender;
     }
 
+    protected Employee(int id, String name, int age, int salary, Gender gender) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.gender = gender;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
