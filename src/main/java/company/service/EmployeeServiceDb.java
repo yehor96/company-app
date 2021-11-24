@@ -20,7 +20,8 @@ public class EmployeeServiceDb implements EmployeeService {
     static final String PASS = "root";
 
     public EmployeeServiceDb() {
-        // initializeDb:
+        // this constructor should create database + write provided employees into it:
+        // TODO add constraint checks into CREATE TABLE query
         // CREATE TABLE employees
         // (id SERIAL PRIMARY KEY NOT NULL,
         // name VARCHAR(50) NOT NULL,
@@ -43,6 +44,7 @@ public class EmployeeServiceDb implements EmployeeService {
     public static void main(String[] args) {
         EmployeeServiceDb db = new EmployeeServiceDb();
         db.printEmployees();
+        System.out.println(db.getById(5));
     }
 
     @Override
@@ -67,6 +69,16 @@ public class EmployeeServiceDb implements EmployeeService {
 
     @Override
     public Employee getById(long id) {
+        try (Connection connection = connect();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM employees WHERE id = " + id)) {
+
+            if (resultSet.next()) {
+                return getEmployeeFromResultSet(resultSet);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
