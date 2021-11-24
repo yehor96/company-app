@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class EmployeeServiceDb implements EmployeeService {
 
@@ -43,8 +44,8 @@ public class EmployeeServiceDb implements EmployeeService {
 
     public static void main(String[] args) {
         EmployeeServiceDb db = new EmployeeServiceDb();
-        db.printEmployees();
-        System.out.println(db.getById(5));
+        var res = db.getByName("Test");
+        Arrays.stream(res).forEach(System.out::println);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class EmployeeServiceDb implements EmployeeService {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM employees")) {
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Employee employee = getEmployeeFromResultSet(resultSet);
                 System.out.println(employee);
             }
@@ -84,7 +85,23 @@ public class EmployeeServiceDb implements EmployeeService {
 
     @Override
     public Employee[] getByName(String name) {
-        return new Employee[0];
+        int size = getNumberOfEmployeesWithCondition("WHERE name = '" + name + "'");
+        Employee[] employees = new Employee[size];
+
+        try (Connection connection = connect();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM employees WHERE name = '" + name + "'")) {
+
+            int counter = 0;
+            while (resultSet.next()) {
+                Employee employee = getEmployeeFromResultSet(resultSet);
+                employees[counter++] = employee;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return employees;
     }
 
     @Override
@@ -128,5 +145,19 @@ public class EmployeeServiceDb implements EmployeeService {
             case DESIGNER -> new Designer(id, name, age, salary, gender, rate, workedDays);
             case DEVELOPER -> new Developer(id, name, age, salary, gender, fixedBugs);
         };
+    }
+
+    private int getNumberOfEmployeesWithCondition(String condition) {
+        try (Connection connection = connect();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT count(*) FROM employees " + condition)) {
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
